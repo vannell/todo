@@ -1,29 +1,44 @@
 # Todo
 
-TODO: Write a gem description
+Yet another simple gem for managing todos lists from CLI and is done in a minimal way (exercise purpose). 
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Manually
 
-    gem 'todo'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install todo
+	$ rake install
 
 ## Usage
 
-TODO: Write usage instructions here
+Adding a new Todo
 
-## Contributing
+	$ todo add Try to understand this tool
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Tag a new todo
+
+	$ todo add Buy some beers @shopping @urgent @vital
+
+Listing all todos yet or not done
+    
+	$ todo list [done]
+
+Listing by tags
+
+	$ todo list urgent shopping
+	#...will display our "Buy some beers"
+
+Mark todo as done by its number
+
+	$ todo done 1
+
+Bump todo one place above
+	
+	$ todo bump 3 # 3rd will become 2nd in order
+
+Create per project/folder list instead of using home list. This list will be available from all subdirectories of the project/folder.
+
+	#from $HOME/my_project
+	$ todo init
+	$ todo add Start a new project
+	
+
