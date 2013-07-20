@@ -81,7 +81,7 @@ module Todo
 		def done(id)
 			yet_not_done = @list.select(&:not_done)
 
-			if yet_not_done.length >= id
+			if id >= 1 && yet_not_done.length >= id
 				yet_not_done[id - 1].done = true
 			end
 			self.save
