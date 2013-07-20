@@ -1,17 +1,18 @@
 require 'yaml'
 
 module Todo
+	CONTEXT_REGEX=/@\S+/i
 	class TodoItem
 		attr_reader :contexts, :content
 		attr_accessor :done
 
 		def initialize(raw)
-			@contexts = raw.scan(/@[0-9A-Z]+/i) || []
+			@contexts = raw.scan(CONTEXT_REGEX) || []
 			#probably not the right way to exclude contexts from content
 			@contexts.each do |c|
 				raw.gsub! c, ''
 			end
-			@content = raw
+			@content = raw.strip
 			@done = false
 		end
 
@@ -56,7 +57,7 @@ module Todo
 		end
 
 		def add(*args)
-			@list << (TodoItem.new *args.join(' '))	
+			@list << (TodoItem.new args.join(' '))	
 			self.save
 		end
 
@@ -64,8 +65,8 @@ module Todo
 			case option
 			when :done, :only_done
 				filter = :done
-			when /@[A-Z0-9]+/i
-				target = option.to_s.scan(/@[A-Z0-9]+/i)
+			when CONTEXT_REGEX
+				target = option.to_s.scan(CONTEXT_REGEX)
 				filter = Proc.new {|t| (target - t.contexts).empty? }
 			else
 				filter = :not_done
