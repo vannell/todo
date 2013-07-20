@@ -72,10 +72,8 @@ module Todo
 				filter = :not_done
 			end
 			
-			i = 1
 			@list.select(&filter).each do |todo|
-				puts "[#{i}] #{todo.content} #{todo.contexts.join(' ')}" 
-				i = i + 1
+				puts "[#{@list.index(todo) + 1}] #{todo.content} #{todo.contexts.join(' ')}" 
 			end
 		end
 
@@ -88,14 +86,13 @@ module Todo
 			self.save
 		end
 
-		def bump(id)
+		def bump(id, up_count=1)
 			yet_not_done = @list.select(&:not_done)
 
-			if id > 1 && yet_not_done.length >= id
-				tmp = yet_not_done[id - 2]
-				yet_not_done[id - 2] = yet_not_done[id - 1]
-				yet_not_done[id - 1] = tmp
-				@list = yet_not_done
+			if (up_count > 0 && id > 1) && (
+				id > up_count && yet_not_done.length >= id)
+				bumped = @list.delete yet_not_done[id - 1]
+				@list.insert(id - up_count - 1, bumped)
 			end
 			self.save
 		end

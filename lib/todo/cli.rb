@@ -11,7 +11,11 @@ class CLI
 		when "done"
 			TodoList.load.done args[1].to_i
 		when "bump"
-			TodoList.load.bump args[1].to_i
+			if args.length == 2
+				TodoList.load.bump args[1].to_i
+			elsif args.length == 3
+				TodoList.load.bump args[1].to_i, args[2].to_i
+			end
 		when "init"
 			TodoList.init 
 		end
