@@ -24,16 +24,22 @@ Listing all todos yet or not done
 
 Listing by tags
 
-	$ todo list urgent shopping
+	$ todo list @urgent @shopping
 	#...will display our "Buy some beers"
 
 Mark todo as done by its number
 
 	$ todo done 1
 
-Bump todo one place above
+Bump todo
 	
-	$ todo bump 3 # 3rd will become 2nd in order
+	$ todo bump todo_id [up = 1]
+	$ todo bump 3    # 3rd will become 2nd in order
+	$ todo bump 3 2  # 3rd will become 1st in order
+
+Clear done todos
+	
+	$ todo clear
 
 Create per project/folder list instead of using home list. This list will be available from all subdirectories of the project/folder.
 
