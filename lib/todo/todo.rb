@@ -96,5 +96,11 @@ module Todo
 			end
 			self.save
 		end
+
+		#clear all done todos
+		def clear
+			@list.delete_if &:done
+			self.save
+		end
 	end
 end

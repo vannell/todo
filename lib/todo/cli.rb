@@ -18,6 +18,8 @@ class CLI
 			end
 		when "init"
 			TodoList.init 
+		when "clear"
+			TodoList.load.clear
 		end
 	end
 end
