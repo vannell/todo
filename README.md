@@ -31,11 +31,20 @@ Mark todo as done by its number
 
 	$ todo done 1
 
+Put priorities
+	A priority range is defined : lowest -->[0, 10] <-- highest
+	Default priority is 5
+
+	When adding a new Todo you can put strings of '+' or '-' in your description to increase/decrease default priority.
+
+	$ todo add Try to put priority in my work +++ #will set a priority of 8
+
 Bump todo
 	
-	$ todo bump todo_id [up = 1]
-	$ todo bump 3    # 3rd will become 2nd in order
-	$ todo bump 3 2  # 3rd will become 1st in order
+	$ todo bump todo_id [priority_increment=1] 
+	$ todo bump 3    # 3rd will have its priority increase by one
+	$ todo bump 3 2  # 3rd will have its priority increase by two
+	$ todo bump 3 -2  # 3rd will have its priority decrease by two
 
 Clear done todos
 	
