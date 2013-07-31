@@ -2,9 +2,14 @@ require 'yaml'
 
 module Todo
 	CONTEXT_REGEX=/@\S+/i
+	PLUS_REGEX=/\++/
+	MINUS_REGEX=/-+/
+
 	class TodoItem
+		include Comparable
+
 		attr_reader :contexts, :content
-		attr_accessor :done
+		attr_accessor :done, :priority
 
 		def initialize(raw)
 			@contexts = raw.scan(CONTEXT_REGEX) || []
@@ -12,12 +17,61 @@ module Todo
 			@contexts.each do |c|
 				raw.gsub! c, ''
 			end
+
+			pri = 5
+			plus = raw.scan(PLUS_REGEX) || []
+			plus.each do |p|
+				pri += p.length
+				raw.gsub! p, ''
+			end
+
+			minus = raw.scan(MINUS_REGEX) || []
+			minus.each do |m|
+				pri -= m.length
+				raw.gsub! m, ''
+			end
+			@priority = if pri < 0
+							0
+						elsif pri > 10
+							10
+						else
+							pri
+						end
+
 			@content = raw.strip
 			@done = false
 		end
 
 		def not_done
 			! @done
+		end
+
+		def <=>(other)
+			if done != other.done
+				if done
+					1
+				else
+					-1	
+				end
+			elsif priority != other.priority
+				other.priority <=> priority
+			else
+				content <=> other.content
+			end
+		end
+
+		def priority=(value)
+			if value < 0
+				@priority = 0
+			elsif value > 10
+				@priority = 10
+			else
+				@priority = value
+			end
+		end
+
+		def to_s
+			"#{@content} #{@contexts.join(' ')} (#{@priority})"
 		end
 	end
 
@@ -52,6 +106,7 @@ module Todo
 
 		def save
 			File.open(TodoList.file_path, 'w') do |f|
+				@list.sort!
 				f.write self.to_yaml
 			end
 		end
@@ -73,31 +128,23 @@ module Todo
 			end
 			
 			@list.select(&filter).each do |todo|
-				puts "[#{@list.index(todo) + 1}] #{todo.content} #{todo.contexts.join(' ')}" 
+				puts "[#{@list.index(todo) + 1}] #{todo}" 
 			end
 		end
 
 		def done(*ids)
 			count = 0
 			ids.sort!.select { |i| i >= i && @list.length >= i }.each do |id|
-				t = @list[id - count - 1]
+				t = @list[id - 1]
 				t.done = true
-				@list.delete t
-				@list << t
 				count = count + 1
 			end
 			self.save unless count == 0
 		end
 
 		def bump(id, up_count=1)
-			if  up_count > 0 && 
-				id > 1 &&
-				id > up_count && 
-				@list.length >= id
-
-				bumped = @list.delete_at(id - 1) 
-				@list.insert(id - up_count - 1, bumped)
-
+			if id > 1 && id <= @list.length
+				@list[id - 1].priority += up_count
 				self.save
 			end
 		end
