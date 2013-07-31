@@ -48,7 +48,11 @@ module Todo
 
 		def <=>(other)
 			if done != other.done
-				done <=> other.done
+				if done
+					1
+				else
+					-1	
+				end
 			elsif priority != other.priority
 				other.priority <=> priority
 			else
@@ -131,10 +135,8 @@ module Todo
 		def done(*ids)
 			count = 0
 			ids.sort!.select { |i| i >= i && @list.length >= i }.each do |id|
-				t = @list[id - count - 1]
+				t = @list[id - 1]
 				t.done = true
-				@list.delete t
-				@list << t
 				count = count + 1
 			end
 			self.save unless count == 0
