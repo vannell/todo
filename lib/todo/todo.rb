@@ -77,14 +77,16 @@ module Todo
 			end
 		end
 
-		def done(id)
-			if id >= 1 && @list.length >= id
-				t = @list[id - 1]
+		def done(*ids)
+			count = 0
+			ids.sort!.select { |i| i >= i && @list.length >= i }.each do |id|
+				t = @list[id - count - 1]
 				t.done = true
 				@list.delete t
 				@list << t
-				self.save
+				count = count + 1
 			end
+			self.save unless count == 0
 		end
 
 		def bump(id, up_count=1)

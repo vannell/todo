@@ -9,7 +9,7 @@ class CLI
 		when "list"
 			TodoList.load.list args[1..-1].join('_').to_sym
 		when "done"
-			TodoList.load.done args[1].to_i
+			TodoList.load.done *args[1..-1].map(&:to_i)
 		when "bump"
 			if args.length == 2
 				TodoList.load.bump args[1].to_i
