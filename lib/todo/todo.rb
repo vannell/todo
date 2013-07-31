@@ -78,23 +78,26 @@ module Todo
 		end
 
 		def done(id)
-			yet_not_done = @list.select(&:not_done)
-
-			if id >= 1 && yet_not_done.length >= id
-				yet_not_done[id - 1].done = true
+			if id >= 1 && @list.length >= id
+				t = @list[id - 1]
+				t.done = true
+				@list.delete t
+				@list << t
+				self.save
 			end
-			self.save
 		end
 
 		def bump(id, up_count=1)
-			yet_not_done = @list.select(&:not_done)
+			if  up_count > 0 && 
+				id > 1 &&
+				id > up_count && 
+				@list.length >= id
 
-			if (up_count > 0 && id > 1) && (
-				id > up_count && yet_not_done.length >= id)
-				bumped = @list.delete yet_not_done[id - 1]
+				bumped = @list.delete_at(id - 1) 
 				@list.insert(id - up_count - 1, bumped)
+
+				self.save
 			end
-			self.save
 		end
 
 		#clear all done todos
