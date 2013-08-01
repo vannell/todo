@@ -27,15 +27,19 @@ Listing by tags
 	$ todo list @urgent @shopping
 	#...will display our "Buy some beers"
 
+Listing all defines contexts
+	
+	$ todo list context[s]
+
 Mark todo as done by its number
 
 	$ todo done 1
 
 Put priorities
-	A priority range is defined : lowest -->[0, 10] <-- highest
-	Default priority is 5
 
-	When adding a new Todo you can put strings of '+' or '-' in your description to increase/decrease default priority.
+* A priority range is defined : lowest -->[0, 10] <-- highest.
+* Default priority is 5.
+* When adding a new Todo you can put strings of '+' or '-' in your description to increase/decrease default priority.
 
 	$ todo add Try to put priority in my work +++ #will set a priority of 8
 
