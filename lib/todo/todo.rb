@@ -1,5 +1,6 @@
 require 'yaml'
 require 'colorize'
+require 'set'
 
 module Todo
 	CONTEXT_REGEX=/@\S+/i
@@ -130,6 +131,16 @@ module Todo
 			self.save
 		end
 
+		def list_context
+			contexts = Set.new
+			@list.each do |t|
+				contexts.merge t.contexts
+			end
+
+			contexts.each {|c| puts c}
+			puts "======= No contexts defined =======" if contexts.empty?
+		end
+
 		def list(option)
 			case option
 			when :done, :only_done
@@ -137,6 +148,8 @@ module Todo
 			when CONTEXT_REGEX
 				target = option.to_s.scan(CONTEXT_REGEX)
 				filter = Proc.new {|t| (target - t.contexts).empty? }
+			when /contexts?/
+				return list_context #maybe better to dispacth
 			else
 				filter = :not_done
 			end
@@ -157,7 +170,7 @@ module Todo
 		end
 
 		def bump(id, up_count=1)
-			if id > 1 && id <= @list.length
+			if id >= 1 && id <= @list.length
 				@list[id - 1].priority += up_count
 				self.save
 			end
