@@ -1,4 +1,5 @@
 require 'yaml'
+require 'colorize'
 
 module Todo
 	CONTEXT_REGEX=/@\S+/i
@@ -71,7 +72,20 @@ module Todo
 		end
 
 		def to_s
-			"#{@content} #{@contexts.join(' ')} (#{@priority})"
+			case @priority
+			when 0, 1
+				color = :light_green
+			when 2, 3
+				color = :green
+			when 4, 5, 6
+				color = :blue
+			when 7, 8
+				color = :red
+			when 9, 10
+				color = :light_red
+			end
+
+			"#{@content} #{@contexts.join(' ')}".colorize color
 		end
 	end
 
