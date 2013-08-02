@@ -15,10 +15,6 @@ module Todo
 
 		def initialize(raw)
 			@contexts = raw.scan(CONTEXT_REGEX) || []
-			#probably not the right way to exclude contexts from content
-			@contexts.each do |c|
-				raw.gsub! c, ''
-			end
 
 			pri = 5
 			plus = raw.scan(PLUS_REGEX) || []
@@ -86,7 +82,7 @@ module Todo
 				color = :light_red
 			end
 
-			"#{@content} #{@contexts.join(' ')}".colorize color
+			@content.colorize color
 		end
 	end
 
