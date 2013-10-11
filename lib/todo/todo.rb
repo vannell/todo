@@ -75,7 +75,7 @@ module Todo
 			when 2, 3
 				color = :green
 			when 4, 5, 6
-				color = :blue
+				color = :light_blue
 			when 7, 8
 				color = :red
 			when 9, 10
@@ -146,6 +146,10 @@ module Todo
 				filter = Proc.new {|t| (target - t.contexts).empty? }
 			when /contexts?/
 				return list_context #maybe better to dispacth
+      when /[+-]+/
+        plus_count = option.to_s.scan(PLUS_REGEX).inject(0) { |s, tok| s + tok.length }
+        minus_count = option.to_s.scan(MINUS_REGEX).inject(0) { |s, tok| s + tok.length }
+        filter = Proc.new { |t| t.not_done && (t.priority >=  5 + plus_count - minus_count) }
 			else
 				filter = :not_done
 			end
