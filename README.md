@@ -56,6 +56,12 @@ Bump todo
 	$ todo bump 3 2  # 3rd will have its priority increase by two
 	$ todo bump 3 -2  # 3rd will have its priority decrease by two
 
+Bump with +/-
+
+	$ todo bump 3 +++ # 3rd will have its priority increase by three
+	$ todo bump 3 --  # 3rd will have its priority increase by two
+	$ todo bump 3 -- ++ -- ++ # 3rd will have its priority increase by zero
+
 Clear done todos
 	
 	$ todo clear

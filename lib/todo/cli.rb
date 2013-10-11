@@ -11,11 +11,7 @@ class CLI
 		when "done", "d"
 			TodoList.load.done *args[1..-1].map(&:to_i)
 		when "bump", "b"
-			if args.length == 2
-				TodoList.load.bump args[1].to_i
-			elsif args.length == 3
-				TodoList.load.bump args[1].to_i, args[2].to_i
-			end
+      TodoList.load.bump args[1].to_i, args[2..-1].join(' ')
 		when "init"
 			TodoList.init 
 		when "clear", "cl"

@@ -170,8 +170,14 @@ module Todo
 		end
 
 		def bump(id, up_count=1)
+      if up_count =~ /^[+\- ]+$/
+        plus_count = up_count.scan(PLUS_REGEX).inject(0) { |s, tok| s + tok.length }
+        minus_count = up_count.to_s.scan(MINUS_REGEX).inject(0) { |s, tok| s + tok.length }
+        up_count = plus_count - minus_count 
+      end
+
 			if id >= 1 && id <= @list.length
-				@list[id - 1].priority += up_count
+				@list[id - 1].priority += up_count.to_i
 				self.save
 			end
 		end
