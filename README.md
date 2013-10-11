@@ -27,6 +27,12 @@ Listing by tags
 	$ todo list @urgent @shopping
 	#...will display our "Buy some beers"
 
+Listing by priorities using + and -
+
+	$ todo list +++ #will show items with priority >= 8
+	$ todo list --- #will show items with priority >= 2
+	$ todo list -- ++ -- +-+ - #exotic way to say priority >= 4
+
 Listing all defines contexts
 	
 	$ todo list context[s]
