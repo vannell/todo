@@ -47,6 +47,7 @@ Put priorities
 * Default priority is 5.
 * When adding a new Todo you can put strings of '+' or '-' in your description to increase/decrease default priority.
 
+
 	$ todo add Try to put priority in my work +++ #will set a priority of 8
 
 Bump todo
@@ -72,4 +73,4 @@ Create per project/folder list instead of using home list. This list will be ava
 	$ todo init
 	$ todo add Start a new project
 	
-
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vannell/todo/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
